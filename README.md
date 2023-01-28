@@ -8,6 +8,8 @@ Boruto Server (with ktor) <a href="https://stevdza-san.com/courses">Stevdza San<
 * Dependency Injection (Koin)
 * Unit Testing
 
-<a href="https://stevdza-san.com/p/build-modern-android-app-with-rest-api-and-ktor-server">Course (Stevdza San)</a>
+<a href="https://stevdza-san.com/p/build-modern-android-app-with-rest-api-and-ktor-server">Course</a>
 
 <a href="https://www.youtube.com/@StevdzaSan">YouTube</a>
+
+<a href="https://github.com/stevdza-san">Github</a>

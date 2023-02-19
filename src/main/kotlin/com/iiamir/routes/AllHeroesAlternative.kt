@@ -1,27 +1,28 @@
 package com.iiamir.routes
 
 import com.iiamir.core.Constants.HERO_NOT_FOUND_ERROR
+import com.iiamir.core.Constants.LIMIT_QUERY
 import com.iiamir.core.Constants.NUMBER_FORMAT_EXCEPTION
 import com.iiamir.core.Constants.PAGE_QUERY
 import com.iiamir.models.ApiResponse
-import com.iiamir.repository.HeroRepository
+import com.iiamir.repository.HeroRepositoryAlternative
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
-import java.lang.IllegalArgumentException
-import java.lang.NumberFormatException
 
-fun Route.getAllHeroes() {
-    val heroRepository: HeroRepository by inject()
+fun Route.getAllHeroesAlternative() {
+    val heroRepositoryAlternative: HeroRepositoryAlternative by inject()
 
     get("/boruto/heroes") {
         try {
             val page = call.request.queryParameters[PAGE_QUERY]?.toInt() ?: 1
-            require(page in 1..5)
+            val limit = call.request.queryParameters[LIMIT_QUERY]?.toInt() ?: 4
 
-            val apiResponse = heroRepository.getAllHeroes(page = page)
+            val apiResponse = heroRepositoryAlternative.getAllHeroes(
+                page = page, limit = limit
+            )
 
             call.respond(
                 message = apiResponse,

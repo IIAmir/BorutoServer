@@ -1,18 +1,19 @@
 package com.iiamir
 
+import com.iiamir.core.Constants.DATA_STATUS
+import com.iiamir.core.Constants.NUMBER_FORMAT_EXCEPTION
+import com.iiamir.core.Constants.PAGE_NOT_FOUND_ERROR
+import com.iiamir.core.Constants.WELCOME_MESSAGE
 import com.iiamir.models.ApiResponse
 import com.iiamir.repository.HeroRepository
 import com.iiamir.repository.HeroRepositoryImpl
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.testing.*
-import io.ktor.util.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.koin.java.KoinJavaComponent.inject
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -27,7 +28,7 @@ class ApplicationTest {
                 actual = response.status
             )
             assertEquals(
-                expected = "Welcome to Boruto API!",
+                expected = WELCOME_MESSAGE,
                 actual = response.bodyAsText()
             )
         }
@@ -51,15 +52,17 @@ class ApplicationTest {
                     expected = HttpStatusCode.OK,
                     actual = response.status
                 )
-                val expected = ApiResponse(
-                    success = true,
-                    message = "OK",
-                    prevPage = if (page == 1) null else page - 1,
-                    nextPage = if (page == 5) null else page + 1,
-                    heroes = heroes[page - 1]
-                )
 
                 val actual = Json.decodeFromString<ApiResponse>(response.bodyAsText())
+
+                val expected = ApiResponse(
+                    success = true,
+                    message = DATA_STATUS,
+                    prevPage = if (page == 1) null else page - 1,
+                    nextPage = if (page == 5) null else page + 1,
+                    heroes = heroes[page - 1],
+                    lastUpdated = actual.lastUpdated
+                )
 
                 assertEquals(
                     expected = expected,
@@ -79,7 +82,7 @@ class ApplicationTest {
                 actual = response.status
             )
             assertEquals(
-                expected = "Page not Found.",
+                expected = PAGE_NOT_FOUND_ERROR,
                 actual = response.bodyAsText()
             )
         }
@@ -94,7 +97,7 @@ class ApplicationTest {
             )
             val expected = ApiResponse(
                 success = false,
-                message = "Only Numbers Allowed."
+                message = NUMBER_FORMAT_EXCEPTION
             )
             val actual = Json.decodeFromString<ApiResponse>(response.bodyAsText())
             assertEquals(
@@ -181,7 +184,7 @@ class ApplicationTest {
                 actual = response.status
             )
             assertEquals(
-                expected = "Page not Found.",
+                expected = PAGE_NOT_FOUND_ERROR,
                 actual = response.bodyAsText()
             )
         }

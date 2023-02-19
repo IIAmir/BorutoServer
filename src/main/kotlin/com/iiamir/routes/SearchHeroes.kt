@@ -1,5 +1,6 @@
 package com.iiamir.routes
 
+import com.iiamir.core.Constants.NAME_QUERY
 import com.iiamir.repository.HeroRepository
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -11,7 +12,7 @@ fun Route.searchHeroes() {
     val heroRepository: HeroRepository by inject()
 
     get("/boruto/heroes/search") {
-        val name = call.request.queryParameters["name"]
+        val name = call.request.queryParameters[NAME_QUERY]
 
         val apiResponse = heroRepository.searchHeroes(name = name)
         call.respond(
